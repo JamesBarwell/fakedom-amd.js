@@ -23,7 +23,7 @@ describe('test-module', function() {
             });
 
             it('should greet me as me', function() {
-                assert.equal(module.greet(), 'Hello, world!');
+                assert.equal(module.greet(), 'Hello, WORLD!');
             });
 
         });

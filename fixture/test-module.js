@@ -1,9 +1,13 @@
-define([], function() {
+define([
+    'transformer'
+], function(
+    Transformer
+) {
 
     var name = 'anonymous';
 
     function setName(value) {
-        name = value;
+        name = Transformer.toUpperCase(value);
     }
 
     function greet() {

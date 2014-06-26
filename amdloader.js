@@ -1,11 +1,10 @@
 // This is intended to be the simplest possible AMD shim that works
-// It is not intended a general AMD loader just enough to load this package
+// It is not intended as general AMD loader just enough to load this package
 // This relies on the fact that Node.js require() is synchronous.
 // It attempts to let the node.js module loader do as much work as possible
 // Also provides a way to replace modules with api compatible counterparts
 
 var path = require('path');
-
 var loaded = {};
 
 module.exports = function amdload(absoluteFilename, map) {
