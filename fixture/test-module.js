@@ -1,5 +1,5 @@
 define([
-    'transformer'
+    'fixture/transformer'
 ], function(
     Transformer
 ) {
