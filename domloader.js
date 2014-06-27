@@ -5,32 +5,34 @@ var amdloader = require('./amdloader');
 var doc;
 var window;
 
-function load(html, module, callback) {
+function load(html, module, requireOptions, callback) {
 
-    var html = null; // causes basic document to be created
+    if (arguments.length === 3) {
+        callback = requireOptions;
+        requireOptions = {};
+    }
+
+    html = html || null; // causes basic document to be created
     var level = null; // defaults to 3
-    var options = { }
+    var options = {};
 
     doc = jsdom(html, level, options);
     window = doc.parentWindow;
+
+    // Allow modules to use console to log to STDOUT/ERR
     window.console = console;
 
-    // Set require options
-    var baseUrl = path.resolve(__dirname);
-    console.log('setting base', baseUrl);
-    window.require = {
-        baseUrl: baseUrl
-    }
+    // @todo set require.js options before init
+    window.require = requireOptions;
 
+    // @todo use npm module
     var requirePath = path.resolve(__dirname, './require.js');
 
     var scriptEl = window.document.createElement("script");
     scriptEl.src = requirePath;
 
     scriptEl.onload = function() {
-        console.log('rjs loaded, require module', module);
         window.require([ module ], function(exported) {
-            console.log('module loaded', exported);
             callback(window, exported);
         });
     }
