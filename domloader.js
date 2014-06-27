@@ -5,8 +5,8 @@ var amdloader = require('./amdloader');
 var doc;
 var window;
 
-function load(html, module, requireOptions, callback) {
-    if (arguments.length === 3) {
+function load(html, requireOptions, callback) {
+    if (arguments.length === 2) {
         callback = requireOptions;
         requireOptions = {};
     }
@@ -14,9 +14,13 @@ function load(html, module, requireOptions, callback) {
     window = getWindow(html);
 
     initRequire(requireOptions, function() {
-        window.require([ module ], function(exported) {
-            callback(window, exported);
-        });
+        callback(window);
+    });
+}
+
+function amdrequire(name, callback) {
+    window.require([ name ], function(module) {
+        callback(module);
     });
 }
 
@@ -46,4 +50,7 @@ function initRequire(options, onRequireLoad) {
     window.document.body.appendChild(scriptEl);
 }
 
-module.exports = load
+module.exports = {
+    load: load,
+    require: amdrequire
+}

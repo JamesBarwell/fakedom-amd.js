@@ -10,10 +10,12 @@ describe('test-module', function() {
         var module;
 
         beforeEach(function(done) {
-            domloader(null, 'fixture/test-module', function(w, m) {
+            domloader.load(null, function(w) {
                 window = w;
-                module = m;
-                done();
+                domloader.require('fixture/test-module', function(m) {
+                    module = m;
+                    done();
+                });
             });
         });
 

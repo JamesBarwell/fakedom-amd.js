@@ -18,10 +18,12 @@ describe('$ess', function() {
                 }
             };
 
-            domloader(null, 'fixture/ess-bonzo-bean', requireOpts, function(w, m) {
+            domloader.load(null, requireOpts, function(w) {
                 window = w;
-                module = m;
-                done();
+                domloader.require('fixture/ess-bonzo-bean', function(m) {
+                    module = m;
+                    done();
+                });
             });
         });
 
