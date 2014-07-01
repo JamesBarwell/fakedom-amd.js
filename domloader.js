@@ -1,6 +1,5 @@
 var path = require('path');
 var jsdom = require('jsdom').jsdom;
-var amdloader = require('./amdloader');
 
 var doc;
 var window;

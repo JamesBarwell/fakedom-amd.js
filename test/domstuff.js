@@ -41,6 +41,37 @@ describe('$ess', function() {
 
         });
 
+        context('and I require the module again', function() {
+            var reloadedModule;
+
+            beforeEach(function(done) {
+                domloader.require('fixture/ess-bonzo-bean', function(m) {
+                    reloadedModule = m;
+                    done();
+                });
+            });
+
+            it('should give me another reference to that module', function() {
+                assert.equal(reloadedModule, module);
+            });
+        });
+
+        context('and I require the bonzo dependency of that module', function() {
+            var bonzo;
+
+            beforeEach(function(done) {
+                domloader.require('bonzo', function(m) {
+                    bonzo = m;
+                    done();
+                });
+            });
+
+            it.only('should give me bonzo', function() {
+                window.document.body.setAttribute('class', 'foo');
+                assert.ok(bonzo(window.document.body).hasClass('foo'));
+            });
+        });
+
     });
 
 });
