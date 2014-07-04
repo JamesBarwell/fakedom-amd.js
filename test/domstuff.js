@@ -66,7 +66,7 @@ describe('$ess', function() {
                 });
             });
 
-            it.only('should give me bonzo', function() {
+            it('should give me bonzo', function() {
                 window.document.body.setAttribute('class', 'foo');
                 assert.ok(bonzo(window.document.body).hasClass('foo'));
             });
