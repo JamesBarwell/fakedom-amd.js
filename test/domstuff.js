@@ -5,6 +5,12 @@ var jsdomrequire = require('../jsdom-require');
 
 describe('$ess', function() {
 
+    var dom;
+
+    beforeEach(function() {
+        dom = new jsdomrequire();
+    });
+
     context('when the module has been loaded with amd', function() {
 
         var window;
@@ -19,9 +25,9 @@ describe('$ess', function() {
                 }
             };
 
-            jsdomrequire.load(null, requireOpts, function(err, w) {
+            dom.load(null, requireOpts, function(err, w) {
                 window = w;
-                jsdomrequire.amdrequire('fixture/ess-bonzo-bean', function(e, m) {
+                dom.amdrequire('fixture/ess-bonzo-bean', function(e, m) {
                     module = m;
                     done();
                 });
@@ -46,7 +52,7 @@ describe('$ess', function() {
             var reloadedModule;
 
             beforeEach(function(done) {
-                jsdomrequire.amdrequire('fixture/ess-bonzo-bean', function(e, m) {
+                dom.amdrequire('fixture/ess-bonzo-bean', function(e, m) {
                     reloadedModule = m;
                     done();
                 });
@@ -61,7 +67,7 @@ describe('$ess', function() {
             var bonzo;
 
             beforeEach(function(done) {
-                jsdomrequire.amdrequire('bonzo', function(e,m) {
+                dom.amdrequire('bonzo', function(e,m) {
                     bonzo = m;
                     done();
                 });

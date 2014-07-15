@@ -2,43 +2,41 @@ var fs    = require('fs');
 var path  = require('path');
 var jsdom = require('jsdom').jsdom;
 
-var doc;
-var window;
+module.exports = jsdomrequire;
+function jsdomrequire() {
+    var doc;
+    var window;
 
-function load(html, requireOptions, callback) {
-    if (arguments.length === 2) {
-        callback = requireOptions;
-        requireOptions = {};
-    } else if (arguments.length === 1) {
-        callback = html;
-        html = null;
-        requireOptions = {};
+    this.load = function(html, requireOptions, callback) {
+        if (arguments.length === 2) {
+            callback = requireOptions;
+            requireOptions = {};
+        } else if (arguments.length === 1) {
+            callback = html;
+            html = null;
+            requireOptions = {};
+        }
+
+        window = getWindow(html);
+
+        initRequire(window, requireOptions, function(err) {
+            callback(err, window);
+        });
     }
 
-    window = getWindow(html);
+    this.amdrequire = function(deps, callback) {
+        deps = Array.isArray(deps) ? deps : [ deps ];
 
-    initRequire(requireOptions, function(err) {
-        callback(err, window);
-    });
-}
+        if (!window) {
+            return callback(new Error(
+                'Could not require module because load() has not been run'
+            ));
+        }
 
-function amdrequire(deps, callback) {
-    deps = Array.isArray(deps) ? deps : [ deps ];
-
-    if (!window) {
-        return callback(new Error(
-            'Could not require module because load() has not been run'
-        ));
+        window.require(deps, function(module) {
+            callback(null, module);
+        });
     }
-
-    window.require(deps, function(module) {
-        callback(null, module);
-    });
-}
-
-function reset() {
-    doc = undefined;
-    window = undefined;
 }
 
 function getWindow(html) {
@@ -55,7 +53,7 @@ function getWindow(html) {
     return window;
 }
 
-function initRequire(options, onRequireLoad) {
+function initRequire(window, options, onRequireLoad) {
     // Set require.js options
     window.require = options;
 
@@ -75,10 +73,4 @@ function initRequire(options, onRequireLoad) {
         }
         window.document.body.appendChild(scriptEl);
     });
-}
-
-module.exports = {
-    load:       load,
-    amdrequire: amdrequire,
-    reset:      reset
 }

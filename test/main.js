@@ -5,8 +5,10 @@ var jsdomrequire = require('../jsdom-require');
 
 describe('jsdom-require', function() {
 
-    afterEach(function() {
-        jsdomrequire.reset();
+    var dom;
+
+    beforeEach(function() {
+        dom = new jsdomrequire();
     });
 
     describe('load()', function() {
@@ -18,7 +20,7 @@ describe('jsdom-require', function() {
 
         context('when given HTML, require options and a callback', function() {
             beforeEach(function(done) {
-                jsdomrequire.load(html, options, function(e, w) {
+                dom.load(html, options, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -42,7 +44,7 @@ describe('jsdom-require', function() {
 
         context('when given html and a callback', function() {
             beforeEach(function(done) {
-                jsdomrequire.load(html, function(e, w) {
+                dom.load(html, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -64,7 +66,7 @@ describe('jsdom-require', function() {
 
         context('when given a callback', function() {
             beforeEach(function(done) {
-                jsdomrequire.load(function(e, w) {
+                dom.load(function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -95,7 +97,7 @@ describe('jsdom-require', function() {
 
         context('when amdrequire() is run without load()', function() {
             beforeEach(function(done) {
-                jsdomrequire.amdrequire('foo', function(e, w) {
+                dom.amdrequire('foo', function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -109,7 +111,7 @@ describe('jsdom-require', function() {
 
         context('when load() has been run', function() {
             beforeEach(function(done) {
-                jsdomrequire.load(function(e, w) {
+                dom.load(function(e, w) {
                     window = w;
                     done();
                 });
@@ -117,7 +119,7 @@ describe('jsdom-require', function() {
 
             context('and amdrequire() is given a module name and callback', function() {
                 beforeEach(function(done) {
-                    jsdomrequire.amdrequire('fixture/standalone', function(e, m) {
+                    dom.amdrequire('fixture/standalone', function(e, m) {
                         err = e;
                         module = m;
                         done();
@@ -135,7 +137,7 @@ describe('jsdom-require', function() {
 
                 context('and amdrequire() is run again with the same module name', function() {
                     beforeEach(function(done) {
-                        jsdomrequire.amdrequire('fixture/standalone', function(e, m) {
+                        dom.amdrequire('fixture/standalone', function(e, m) {
                             err = e;
                             module = m;
                             done();
