@@ -1,14 +1,19 @@
 {
-  "name": "amdtest",
-  "version": "0.0.0",
-  "description": "ERROR: No README.md file found!",
-  "main": "amd-loader-glen.js",
+  "name": "jsdom-require",
+  "version": "0.1.0",
+  "description": "A simple integration of jsdom and require.js",
+  "main": "jsdom-require.js",
+  "keywords": [
+    "jsdom",
+    "require",
+    "amd"
+  ],
   "scripts": {
     "test": "mocha"
   },
-  "repository": "",
-  "author": "",
-  "license": "BSD",
+  "author": "James Barwell <jb@jamesbarwell.co.uk>",
+  "license": "MIT",
+  "readmeFilename": "README.md",
   "dependencies": {
     "jsdom": "~0.11.0",
     "requirejs": "~2.1.14"

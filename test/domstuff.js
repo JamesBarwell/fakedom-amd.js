@@ -1,6 +1,7 @@
 var assert = require('assert');
 var mocha = require('mocha');
-var domloader = require('../domloader');
+
+var jsdomrequire = require('../jsdom-require');
 
 describe('$ess', function() {
 
@@ -18,9 +19,9 @@ describe('$ess', function() {
                 }
             };
 
-            domloader.load(null, requireOpts, function(err, w) {
+            jsdomrequire.load(null, requireOpts, function(err, w) {
                 window = w;
-                domloader.require('fixture/ess-bonzo-bean', function(m) {
+                jsdomrequire.require('fixture/ess-bonzo-bean', function(m) {
                     module = m;
                     done();
                 });
@@ -45,7 +46,7 @@ describe('$ess', function() {
             var reloadedModule;
 
             beforeEach(function(done) {
-                domloader.require('fixture/ess-bonzo-bean', function(m) {
+                jsdomrequire.require('fixture/ess-bonzo-bean', function(m) {
                     reloadedModule = m;
                     done();
                 });
@@ -60,7 +61,7 @@ describe('$ess', function() {
             var bonzo;
 
             beforeEach(function(done) {
-                domloader.require('bonzo', function(m) {
+                jsdomrequire.require('bonzo', function(m) {
                     bonzo = m;
                     done();
                 });

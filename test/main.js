@@ -1,6 +1,7 @@
-var assert = require('assert');
-var mocha = require('mocha');
-var domloader = require('../domloader');
+var assert    = require('assert');
+var mocha     = require('mocha');
+
+var jsdomrequire = require('../jsdom-require');
 
 describe('test-module', function() {
 
@@ -10,9 +11,9 @@ describe('test-module', function() {
         var module;
 
         beforeEach(function(done) {
-            domloader.load(function(err, w) {
+            jsdomrequire.load(function(err, w) {
                 window = w;
-                domloader.require('fixture/test-module', function(m) {
+                jsdomrequire.require('fixture/test-module', function(m) {
                     module = m;
                     done();
                 });
