@@ -25,9 +25,20 @@ function load(html, requireOptions, callback) {
 function amdrequire(deps, callback) {
     deps = Array.isArray(deps) ? deps : [ deps ];
 
+    if (!window) {
+        return callback(new Error(
+            'Could not require module because load() has not been run'
+        ));
+    }
+
     window.require(deps, function(module) {
-        callback(module);
+        callback(null, module);
     });
+}
+
+function reset() {
+    doc = undefined;
+    window = undefined;
 }
 
 function getWindow(html) {
@@ -67,6 +78,7 @@ function initRequire(options, onRequireLoad) {
 }
 
 module.exports = {
-    load: load,
-    require: amdrequire
+    load:       load,
+    amdrequire: amdrequire,
+    reset:      reset
 }

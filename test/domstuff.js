@@ -21,7 +21,7 @@ describe('$ess', function() {
 
             jsdomrequire.load(null, requireOpts, function(err, w) {
                 window = w;
-                jsdomrequire.require('fixture/ess-bonzo-bean', function(m) {
+                jsdomrequire.amdrequire('fixture/ess-bonzo-bean', function(e, m) {
                     module = m;
                     done();
                 });
@@ -46,7 +46,7 @@ describe('$ess', function() {
             var reloadedModule;
 
             beforeEach(function(done) {
-                jsdomrequire.require('fixture/ess-bonzo-bean', function(m) {
+                jsdomrequire.amdrequire('fixture/ess-bonzo-bean', function(e, m) {
                     reloadedModule = m;
                     done();
                 });
@@ -61,7 +61,7 @@ describe('$ess', function() {
             var bonzo;
 
             beforeEach(function(done) {
-                jsdomrequire.require('bonzo', function(m) {
+                jsdomrequire.amdrequire('bonzo', function(e,m) {
                     bonzo = m;
                     done();
                 });
