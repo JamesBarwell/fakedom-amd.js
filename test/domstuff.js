@@ -7,10 +7,6 @@ describe('$ess', function() {
 
     var dom;
 
-    beforeEach(function() {
-        dom = new jsdomrequire();
-    });
-
     context('when the module has been loaded with amd', function() {
 
         var window;
@@ -25,7 +21,7 @@ describe('$ess', function() {
                 }
             };
 
-            dom.load(null, requireOpts, function(err, w) {
+            dom = new jsdomrequire(null, requireOpts, function(err, w) {
                 window = w;
                 dom.amdrequire('fixture/ess-bonzo-bean', function(e, m) {
                     module = m;

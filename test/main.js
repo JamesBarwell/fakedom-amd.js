@@ -7,11 +7,7 @@ describe('jsdom-require', function() {
 
     var dom;
 
-    beforeEach(function() {
-        dom = new jsdomrequire();
-    });
-
-    describe('load()', function() {
+    describe('Constructor', function() {
         var err;
         var window;
 
@@ -20,7 +16,7 @@ describe('jsdom-require', function() {
 
         context('when given HTML, require options and a callback', function() {
             beforeEach(function(done) {
-                dom.load(html, options, function(e, w) {
+                dom = new jsdomrequire(html, options, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -44,7 +40,7 @@ describe('jsdom-require', function() {
 
         context('when given html and a callback', function() {
             beforeEach(function(done) {
-                dom.load(html, function(e, w) {
+                dom = new jsdomrequire(html, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -66,7 +62,7 @@ describe('jsdom-require', function() {
 
         context('when given a callback', function() {
             beforeEach(function(done) {
-                dom.load(function(e, w) {
+                dom = new jsdomrequire(function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -95,23 +91,9 @@ describe('jsdom-require', function() {
         var html = '<html><body><h1>test</h1></body></html>';
         var options = { };
 
-        context('when amdrequire() is run without load()', function() {
+        context('when it has been constructed', function() {
             beforeEach(function(done) {
-                dom.amdrequire('foo', function(e, w) {
-                    err = e;
-                    window = w;
-                    done();
-                });
-            });
-
-            it('should pass an error to the callback', function() {
-                assert.ok(err);
-            });
-        });
-
-        context('when load() has been run', function() {
-            beforeEach(function(done) {
-                dom.load(function(e, w) {
+                dom = new jsdomrequire(function(e, w) {
                     window = w;
                     done();
                 });

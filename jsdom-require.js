@@ -3,26 +3,24 @@ var path  = require('path');
 var jsdom = require('jsdom').jsdom;
 
 module.exports = jsdomrequire;
-function jsdomrequire() {
+function jsdomrequire(html, requireOptions, callback) {
     var doc;
     var window;
 
-    this.load = function(html, requireOptions, callback) {
-        if (arguments.length === 2) {
-            callback = requireOptions;
-            requireOptions = {};
-        } else if (arguments.length === 1) {
-            callback = html;
-            html = null;
-            requireOptions = {};
-        }
-
-        window = getWindow(html);
-
-        initRequire(window, requireOptions, function(err) {
-            callback(err, window);
-        });
+    if (arguments.length === 2) {
+        callback = requireOptions;
+        requireOptions = {};
+    } else if (arguments.length === 1) {
+        callback = html;
+        html = null;
+        requireOptions = {};
     }
+
+    window = getWindow(html);
+
+    initRequire(window, requireOptions, function(err) {
+        callback(err, window);
+    });
 
     this.amdrequire = function(deps, callback) {
         deps = Array.isArray(deps) ? deps : [ deps ];
