@@ -9,7 +9,8 @@
     "amd"
   ],
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "spec": "mocha -R spec"
   },
   "author": "James Barwell <jb@jamesbarwell.co.uk>",
   "license": "MIT",
