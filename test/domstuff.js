@@ -18,7 +18,7 @@ describe('$ess', function() {
                 }
             };
 
-            domloader.load(null, requireOpts, function(w) {
+            domloader.load(null, requireOpts, function(err, w) {
                 window = w;
                 domloader.require('fixture/ess-bonzo-bean', function(m) {
                     module = m;
