@@ -136,6 +136,26 @@ describe('jsdom-require', function() {
                     });
                 });
             });
+
+            context('and amdrequire() loads a module that has a dependency', function() {
+                beforeEach(function(done) {
+                    dom.amdrequire('fixture/dependency-a', function(e, m) {
+                        err = e;
+                        module = m;
+                        done();
+                    });
+                });
+
+                it('should not pass an error to the callback', function() {
+                    assert.ok(!err);
+                });
+
+                it('should pass the module to the callback with depdency fulfilled', function() {
+                    assert.ok(module);
+                    assert.equal(module.foo(), 'foo');
+                    assert.equal(module.bar(), 'bar');
+                });
+            });
         });
     });
 
