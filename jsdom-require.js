@@ -38,7 +38,10 @@ function jsdomrequire(html, requireOptions, callback) {
 }
 
 function getWindow(html) {
-    html        = html || null; // causes basic document to be created
+    if (!html) {
+        html = '<html><head></head><body></body></html>';
+    }
+
     var level   = null; // defaults to 3
     var options = {};
 
