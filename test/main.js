@@ -139,4 +139,38 @@ describe('jsdom-require', function() {
         });
     });
 
+    describe('DOM manipulation', function() {
+        var window;
+        var module;
+
+        context('with an AMD module loaded that reaches into the DOM', function() {
+            beforeEach(function(done) {
+                var dom = new jsdomrequire(function(e, w) {
+                    err = e;
+                    window = w;
+                    loadModule()
+                });
+
+                function loadModule() {
+                    dom.amdrequire('fixture/dom-manipulator', function(e, m) {
+                        err = e;
+                        module = m;
+                        done();
+                    });
+                }
+            });
+
+            context('when the module tries to add a class to the DOM body element', function() {
+                beforeEach(function() {
+                    module.addClassToBody('foo');
+                });
+
+                it('should have added the class', function() {
+                    var actual = window.document.body.getAttribute('class');
+                    assert.ok(actual.indexOf('foo') !== -1);
+                });
+            });
+        });
+    });
+
 });
