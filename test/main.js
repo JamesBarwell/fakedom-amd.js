@@ -1,9 +1,9 @@
 var assert = require('assert');
 var mocha  = require('mocha');
 
-var jsdomrequire = require('../jsdom-require');
+var fakedomrequire = require('../fakedom-require');
 
-describe('jsdom-require', function() {
+describe('fakedom-require', function() {
 
     var dom;
 
@@ -16,7 +16,7 @@ describe('jsdom-require', function() {
 
         context('when given HTML, require options and a callback', function() {
             beforeEach(function(done) {
-                dom = new jsdomrequire(html, options, function(e, w) {
+                dom = new fakedomrequire(html, options, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -40,7 +40,7 @@ describe('jsdom-require', function() {
 
         context('when given html and a callback', function() {
             beforeEach(function(done) {
-                dom = new jsdomrequire(html, function(e, w) {
+                dom = new fakedomrequire(html, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -62,7 +62,7 @@ describe('jsdom-require', function() {
 
         context('when given a callback', function() {
             beforeEach(function(done) {
-                dom = new jsdomrequire(function(e, w) {
+                dom = new fakedomrequire(function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -93,7 +93,7 @@ describe('jsdom-require', function() {
 
         context('when it has been constructed', function() {
             beforeEach(function(done) {
-                dom = new jsdomrequire(function(e, w) {
+                dom = new fakedomrequire(function(e, w) {
                     window = w;
                     done();
                 });
@@ -165,7 +165,7 @@ describe('jsdom-require', function() {
 
         context('with an AMD module loaded that reaches into the DOM', function() {
             beforeEach(function(done) {
-                var dom = new jsdomrequire(function(e, w) {
+                var dom = new fakedomrequire(function(e, w) {
                     err = e;
                     window = w;
                     loadModule()

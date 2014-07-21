@@ -1,9 +1,10 @@
 {
-  "name": "jsdom-require",
+  "name": "fakedom-require",
   "version": "0.1.0",
-  "description": "A simple integration of jsdom and require.js",
-  "main": "jsdom-require.js",
+  "description": "A simple integration of a fake DOM and require.js",
+  "main": "fakedom-require.js",
   "keywords": [
+    "fakedom",
     "jsdom",
     "require",
     "amd"
