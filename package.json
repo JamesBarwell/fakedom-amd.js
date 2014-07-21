@@ -1,7 +1,7 @@
 {
   "name": "fakedom-require",
   "version": "0.1.0",
-  "description": "A simple integration of a fake DOM and require.js",
+  "description": "Provides a simple interface to bring up a fake DOM and require.js.",
   "main": "fakedom-require.js",
   "keywords": [
     "fakedom",
