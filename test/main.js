@@ -60,6 +60,28 @@ describe('fakedom-require', function() {
             });
         });
 
+        context('when given options and a callback', function() {
+            beforeEach(function(done) {
+                dom = new fakedomrequire({ baseUrl: 'test' }, function(e, w) {
+                    err = e;
+                    window = w;
+                    done();
+                });
+            });
+
+            it('should load default HTML', function() {
+                assert.ok(window.document.innerHTML.indexOf('<h1>test</h1>') === -1);
+            });
+
+            it('should initialise require.js', function() {
+                assert.ok(window.require);
+            });
+
+            it('should not pass an error to the callback', function() {
+                assert.ok(!err);
+            });
+        });
+
         context('when given a callback', function() {
             beforeEach(function(done) {
                 dom = new fakedomrequire(function(e, w) {
@@ -93,7 +115,7 @@ describe('fakedom-require', function() {
 
         context('when it has been constructed', function() {
             beforeEach(function(done) {
-                dom = new fakedomrequire(null, { baseUrl: 'test' }, function(e, w) {
+                dom = new fakedomrequire({ baseUrl: 'test' }, function(e, w) {
                     window = w;
                     done();
                 });
@@ -165,7 +187,7 @@ describe('fakedom-require', function() {
 
         context('with an AMD module loaded that reaches into the DOM', function() {
             beforeEach(function(done) {
-                var dom = new fakedomrequire(null, { baseUrl: 'test' }, function(e, w) {
+                var dom = new fakedomrequire({ baseUrl: 'test' }, function(e, w) {
                     err = e;
                     window = w;
                     loadModule()

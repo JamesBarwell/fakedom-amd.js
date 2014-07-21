@@ -8,8 +8,14 @@ function jsdomrequire(html, requireOptions, callback) {
     var window;
 
     if (arguments.length === 2) {
-        callback = requireOptions;
-        requireOptions = {};
+        if (typeof html === 'string') {
+            callback = requireOptions;
+            requireOptions = {};
+        } else {
+            callback = requireOptions;
+            requireOptions = html;
+            html = null;
+        }
     } else if (arguments.length === 1) {
         callback = html;
         html = null;
