@@ -12,13 +12,24 @@ var fakedomrequire = require('fakedom-require');
 var window;
 var module;
 
-var dom = new fakedomrequire('<h1>Test</h1>', { baseUrl: 'test' }, function(err, w) {
+// The module will automatically wrap this in <body>, if it is missing
+var html = '<h1>test</h1>';
+
+var requireOptions = {
+    baseUrl: 'test'
+};
+
+var dom = new fakedomrequire(html, requireOptions, function(err, w) {
     if (err) throw err;
     window = w;
-    loadModule()
+    loadModule();
 });
 
 function loadModule() {
+    // Stub out a dependency of the AMD module under test
+    var stub = {};
+    dom.stub('some-dependency', stub);
+
     // Load module at test/my-amd-module.js
     dom.amdrequire('my-amd-module', function(err, m) {
         if (err) throw err;
@@ -31,3 +42,5 @@ function useModule() {
     module.doStuff();
 }
 ```
+
+For more examples please see the test directory.
