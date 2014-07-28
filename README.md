@@ -1,13 +1,13 @@
-fakedom-require.js
+fakedom-amd.js
 ======
 
-Provides a simple interface to bring up a fake DOM and require.js.
+Provides a simple interface to bring up a fake DOM with AMD support.
 
-This wrapper currently uses jsdom to provide the fake DOM implementation.
+This wrapper currently uses jsdom to provide the fake DOM implementation, and require.js to provide AMD support.
 
 ## Example
 ```js
-var fakedomrequire = require('fakedom-require');
+var fakedomamd = require('fakedom-amd');
 
 var window;
 var module;
@@ -19,7 +19,7 @@ var requireOptions = {
     baseUrl: 'test'
 };
 
-var dom = new fakedomrequire(html, requireOptions, function(err, w) {
+var dom = new fakedomamd(html, requireOptions, function(err, w) {
     if (err) throw err;
     window = w;
     loadModule();

@@ -1,9 +1,9 @@
 var assert = require('assert');
 var mocha  = require('mocha');
 
-var fakedomrequire = require('../fakedom-require');
+var fakedomamd = require('../fakedom-amd');
 
-describe('fakedom-require', function() {
+describe('fakedom-amd', function() {
 
     var dom;
 
@@ -16,7 +16,7 @@ describe('fakedom-require', function() {
 
         context('when given HTML, require options and a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomrequire(html, options, function(e, w) {
+                dom = new fakedomamd(html, options, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -40,7 +40,7 @@ describe('fakedom-require', function() {
 
         context('when given html and a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomrequire(html, function(e, w) {
+                dom = new fakedomamd(html, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -62,7 +62,7 @@ describe('fakedom-require', function() {
 
         context('when given options and a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomrequire({ baseUrl: 'test' }, function(e, w) {
+                dom = new fakedomamd({ baseUrl: 'test' }, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -84,7 +84,7 @@ describe('fakedom-require', function() {
 
         context('when given a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomrequire(function(e, w) {
+                dom = new fakedomamd(function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -115,7 +115,7 @@ describe('fakedom-require', function() {
 
         context('when it has been constructed', function() {
             beforeEach(function(done) {
-                dom = new fakedomrequire({ baseUrl: 'test' }, function(e, w) {
+                dom = new fakedomamd({ baseUrl: 'test' }, function(e, w) {
                     window = w;
                     done();
                 });
@@ -187,7 +187,7 @@ describe('fakedom-require', function() {
 
         context('with an AMD module loaded that reaches into the DOM', function() {
             beforeEach(function(done) {
-                var dom = new fakedomrequire({ baseUrl: 'test' }, function(e, w) {
+                var dom = new fakedomamd({ baseUrl: 'test' }, function(e, w) {
                     err = e;
                     window = w;
                     loadModule()
@@ -221,7 +221,7 @@ describe('fakedom-require', function() {
 
         context('when it has been constructed', function() {
             beforeEach(function(done) {
-                dom = new fakedomrequire({ baseUrl: 'test' }, function(e, w) {
+                dom = new fakedomamd({ baseUrl: 'test' }, function(e, w) {
                     window = w;
                     done();
                 });

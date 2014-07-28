@@ -1,13 +1,14 @@
 {
-  "name": "fakedom-require",
+  "name": "fakedom-amd",
   "version": "0.1.0",
-  "description": "Provides a simple interface to bring up a fake DOM and require.js.",
-  "main": "fakedom-require.js",
+  "description": "Provides a simple interface to bring up a fake DOM with AMD support.",
+  "main": "fakedom-amd.js",
   "keywords": [
     "fakedom",
-    "jsdom",
+    "amd",
+    "dom",
     "require",
-    "amd"
+    "jsdom"
   ],
   "scripts": {
     "test": "mocha",
