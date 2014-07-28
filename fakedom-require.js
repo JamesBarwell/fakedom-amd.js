@@ -4,15 +4,13 @@ var jsdom = require('jsdom').jsdom;
 
 module.exports = jsdomrequire;
 function jsdomrequire(html, requireOptions, callback) {
-    var doc;
     var window;
 
     if (arguments.length === 2) {
+        callback = requireOptions;
         if (typeof html === 'string') {
-            callback = requireOptions;
             requireOptions = {};
         } else {
-            callback = requireOptions;
             requireOptions = html;
             html = null;
         }
@@ -52,7 +50,7 @@ function getWindow(html) {
     var level   = null; // defaults to 3
     var options = {};
 
-    doc = jsdom(html, level, options);
+    var doc = jsdom(html, level, options);
     window = doc.parentWindow;
 
     // Allow AMD modules to use console to log to STDOUT/ERR
