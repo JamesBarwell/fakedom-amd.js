@@ -215,4 +215,45 @@ describe('fakedom-require', function() {
         });
     });
 
+    describe('stub()', function() {
+        var window;
+        var module;
+
+        context('when it has been constructed', function() {
+            beforeEach(function(done) {
+                dom = new fakedomrequire({ baseUrl: 'test' }, function(e, w) {
+                    window = w;
+                    done();
+                });
+            });
+
+            context('and an existing module is stubbed', function() {
+                beforeEach(function() {
+                    var stub = {
+                        bar: function() {
+                            return 'stub'
+                        }
+                    }
+                    dom.stub('fixture/dependency-b', stub);
+                });
+
+                context('and amdrequire() loads a module that has the stub dependency', function() {
+                    beforeEach(function(done) {
+                        dom.amdrequire('fixture/dependency-a', function(e, m) {
+                            err = e;
+                            module = m;
+                            done();
+                        });
+                    });
+
+                    it('should use the stub instead of the real dependency', function() {
+                        assert.equal(module.foo(), 'foo');
+                        assert.equal(module.bar(), 'stub');
+                    });
+                });
+            });
+        });
+    });
+
+
 });

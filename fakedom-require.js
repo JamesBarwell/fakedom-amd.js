@@ -39,6 +39,10 @@ function jsdomrequire(html, requireOptions, callback) {
             callback(null, module);
         });
     }
+
+    this.stub = function(name, module) {
+        window.define(name, module);
+    }
 }
 
 function getWindow(html) {
