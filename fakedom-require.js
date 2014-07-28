@@ -38,10 +38,13 @@ function jsdomrequire(html, requireOptions, callback) {
         window.require(deps, function(module) {
             callback(null, module);
         });
+
+        return this;
     }
 
     this.stub = function(name, module) {
         window.define(name, module);
+        return this;
     }
 }
 
