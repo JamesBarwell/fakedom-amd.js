@@ -11,8 +11,12 @@ describe('fakedom-amd', function() {
         var err;
         var window;
 
+        var requireJsLoaded = false;
+
         var html = '<html><body><h1>test</h1></body></html>';
-        var options = { };
+        var options = {
+            callback: function() { requireJsLoaded = true; }
+        };
 
         context('when given HTML, require options and a callback', function() {
             beforeEach(function(done) {
@@ -31,7 +35,9 @@ describe('fakedom-amd', function() {
                 assert.ok(window.require);
             });
 
-            it('should pass the given options to require.js');
+            it('should pass the given options to require.js', function() {
+                assert.ok(requireJsLoaded);
+            });
 
             it('should not pass an error to the callback', function() {
                 assert.ok(!err);
