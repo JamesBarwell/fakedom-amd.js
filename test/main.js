@@ -178,6 +178,24 @@ describe('fakedom-amd', function() {
                     assert.equal(module.bar(), 'bar');
                 });
             });
+
+            context('and amdrequire() loads a module that it cannot find', function() {
+                beforeEach(function(done) {
+                    dom.amdrequire('fixture/does-not-exist', function(e, m) {
+                        err = e;
+                        module = m;
+                        done();
+                    });
+                });
+
+                it('should pass an error to the callback', function() {
+                    assert.ok(err);
+                });
+
+                it('should not have loaded the module', function() {
+                    assert.ok(!module);
+                });
+            });
         });
     });
 

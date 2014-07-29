@@ -3,11 +3,11 @@ var path  = require('path');
 var jsdom = require('jsdom').jsdom;
 
 module.exports = jsdomrequire;
-function jsdomrequire(html, requireOptions, callback) {
+function jsdomrequire(html, requireOptions, onInit) {
     var window;
 
     if (arguments.length === 2) {
-        callback = requireOptions;
+        onInit = requireOptions;
         if (typeof html === 'string') {
             requireOptions = {};
         } else {
@@ -15,7 +15,7 @@ function jsdomrequire(html, requireOptions, callback) {
             html = null;
         }
     } else if (arguments.length === 1) {
-        callback = html;
+        onInit = html;
         html = null;
         requireOptions = {};
     }
@@ -23,20 +23,22 @@ function jsdomrequire(html, requireOptions, callback) {
     window = getWindow(html);
 
     initRequire(window, requireOptions, function(err) {
-        callback(err, window);
+        onInit(err, window);
     });
 
-    this.amdrequire = function(deps, callback) {
+    this.amdrequire = function(deps, onAmdLoad) {
         deps = Array.isArray(deps) ? deps : [ deps ];
 
         if (!window) {
-            return callback(new Error(
+            return onAmdLoad(new Error(
                 'Could not require module because load() has not been run'
             ));
         }
 
         window.require(deps, function(module) {
-            callback(null, module);
+            onAmdLoad(null, module);
+        }, function(err) {
+            onAmdLoad(err);
         });
 
         return this;
