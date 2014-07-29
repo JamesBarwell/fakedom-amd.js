@@ -53,7 +53,7 @@ function jsdomrequire(html, requireOptions, onInit) {
 function getWindow(html) {
     html = html || '';
     if (html.indexOf('<body>') === -1) {
-        html = '<html><head></head>' + html + '<body></body></html>';
+        html = '<html><head></head><body>' + html + '</body></html>';
     }
 
     var level   = null; // defaults to 3
