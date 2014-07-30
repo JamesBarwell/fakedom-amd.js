@@ -276,6 +276,32 @@ describe('fakedom-amd', function() {
                     });
                 });
             });
+
+            context('and an existing module is stubbed with a map', function() {
+                beforeEach(function() {
+                    var stub = {
+                        bar: function() {
+                            return 'stub'
+                        }
+                    }
+                    dom.stub({ 'fixture/dependency-b': stub });
+                });
+
+                context('and amdrequire() loads a module that has the stub dependency', function() {
+                    beforeEach(function(done) {
+                        dom.amdrequire('fixture/dependency-a', function(e, m) {
+                            err = e;
+                            module = m;
+                            done();
+                        });
+                    });
+
+                    it('should use the stub instead of the real dependency', function() {
+                        assert.equal(module.foo(), 'foo');
+                        assert.equal(module.bar(), 'stub');
+                    });
+                });
+            });
         });
     });
 

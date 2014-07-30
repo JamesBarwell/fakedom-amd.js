@@ -45,7 +45,17 @@ function jsdomrequire(html, requireOptions, onInit) {
     }
 
     this.stub = function(name, module) {
-        window.define(name, module);
+        if (arguments.length === 2 ) {
+            var stubs = {};
+            stubs[name] = module;
+            name = stubs;
+        }
+
+        Object.keys(name).forEach(function(moduleName) {
+            var stub = name[moduleName];
+            window.define(moduleName, stub);
+        });
+
         return this;
     }
 }
