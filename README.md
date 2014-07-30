@@ -7,36 +7,43 @@ This wrapper currently uses jsdom to provide the fake DOM implementation, and re
 
 ## Example
 ```js
-var fakedomamd = require('fakedom-amd');
+var fakedom = require('fakedom-amd');
 
 var window;
 var module;
 
-// The module will automatically wrap this in <body>, if it is missing
+// Specify HTML; this will automatically be wrapped in <body> if neccessary
 var html = '<h1>test</h1>';
 
+// Pass config options to AMD loader
 var requireOptions = {
     baseUrl: 'test'
 };
 
-var dom = new fakedomamd(html, requireOptions, function(err, w) {
-    if (err) throw err;
-    window = w;
-    loadModule();
-});
-
-function loadModule() {
-    // Stub out a dependency of the AMD module under test
-    var stub = {};
-    dom.stub('some-dependency', stub);
-
-    // Load module at test/my-amd-module.js
-    dom.amdrequire('my-amd-module', function(err, m) {
-        if (err) throw err;
-        module = m;
-        useModule()
-    });
+// Stub out a dependency of the AMD module under test
+var stubs = {
+    'some-dependency': {}
 }
+
+// Load module at test/my-amd-module.js immediately
+var initialModuleName = 'test/my-amd-module';
+
+// The options object passed to the constructor, and all of its keys, are optional. The callback is mandatory.
+
+var dom = new fakedom(
+    {
+        html:           html,
+        requireOptions: requireOptions,
+        stubs:          stubs,
+        module:         'test/my-amd-module'
+    },
+    function(err, w, m) {
+        if (err) throw err;
+        window = w;
+        module = m; // will be undefined if no 'module' option was given
+        useModule();
+    }
+);
 
 function useModule() {
     module.doStuff();
