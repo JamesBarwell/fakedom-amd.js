@@ -1,6 +1,6 @@
 {
   "name": "fakedom-amd",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Provides a simple interface to bring up a fake DOM with AMD support.",
   "main": "fakedom-amd.js",
   "keywords": [
