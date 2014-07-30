@@ -1,6 +1,9 @@
 fakedom-amd.js
 ======
 
+[![Build Status](https://travis-ci.org/JamesBarwell/fakedom-amd.js.svg?branch=master)](https://travis-ci.org/JamesBarwell/fakedom-amd.js)
+[![NPM version](https://badge.fury.io/js/fakedom-amd.svg)](http://badge.fury.io/js/fakedom-amd)
+
 Provides a simple interface to bring up a fake DOM with AMD support.
 
 This wrapper currently uses jsdom to provide the fake DOM implementation, and require.js to provide AMD support.
