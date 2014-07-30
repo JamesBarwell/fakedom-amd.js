@@ -17,7 +17,16 @@ function jsdomrequire(options, onInit) {
 
     var self = this;
     initRequire(window, options.requireOptions, function(err) {
-        onInit(err, window);
+        if (options.module) {
+           self.amdrequire(options.module, function(err, module) {
+                if (err) {
+                    return onInit(err);
+                }
+                return onInit(null, window, module);
+           });
+        } else {
+            onInit(err, window);
+        }
     });
 
     this.amdrequire = function(deps, onAmdLoad) {

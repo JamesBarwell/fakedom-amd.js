@@ -19,6 +19,44 @@ describe('fakedom-amd', function() {
             callback: function() { requireJsLoaded = true; }
         };
 
+        context('when given HTML, require options, a module name and a callback', function() {
+            var module;
+
+            beforeEach(function(done) {
+                dom = new fakedomamd({
+                    html:           html,
+                    requireOptions: options,
+                    module:         'fixture/standalone'
+                }, function(e, w, m) {
+                    err = e;
+                    window = w;
+                    module = m;
+                    done();
+                });
+            });
+
+            it('should load the given HTML', function() {
+                assert.ok(window.document.innerHTML.indexOf('<h1>test</h1>') !== -1);
+            });
+
+            it('should initialise require.js', function() {
+                assert.ok(window.require);
+            });
+
+            it('should pass the given options to require.js', function() {
+                assert.ok(requireJsLoaded);
+            });
+
+            it('should pass the module to the callback', function() {
+                assert.ok(module);
+                assert.equal(module.foo(), 'standalone-foo');
+            });
+
+            it('should not pass an error to the callback', function() {
+                assert.ok(!err);
+            });
+        });
+
         context('when given HTML, require options and a callback', function() {
             beforeEach(function(done) {
                 dom = new fakedomamd({ html: html, requireOptions: options }, function(e, w) {
