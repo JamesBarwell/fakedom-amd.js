@@ -38,8 +38,10 @@ function jsdomrequire(options, onInit) {
             ));
         }
 
-        window.require(deps, function(module) {
-            onAmdLoad(null, module);
+        window.require(deps, function() {
+            var args = Array.prototype.slice.call(arguments);
+            args.unshift(null);
+            onAmdLoad.apply(null, args);
         }, function(err) {
             onAmdLoad(err);
         });

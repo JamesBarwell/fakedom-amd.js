@@ -204,6 +204,31 @@ describe('fakedom-amd', function() {
                 });
             });
 
+            context('and amdrequire() is given an array of module names and callback', function() {
+                var modules;
+
+                beforeEach(function(done) {
+                    modules = [];
+
+                    dom.amdrequire(['fixture/standalone', 'fixture/standalone2'], function(e, m, m2) {
+                        err = e;
+                        modules.push(m);
+                        modules.push(m2);
+                        done();
+                    });
+                });
+
+                it('should not pass an error to the callback', function() {
+                    assert.ok(!err);
+                });
+
+                it('should pass two modules to the callback', function() {
+                    assert.equal(modules.length, 2);
+                    assert.equal(modules[0].foo(), 'standalone-foo');
+                    assert.equal(modules[1].foo(), 'standalone2-foo');
+                });
+            });
+
             context('and amdrequire() loads a module that has a dependency', function() {
                 beforeEach(function(done) {
                     dom.amdrequire('fixture/dependency-a', function(e, m) {
