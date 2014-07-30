@@ -3,26 +3,20 @@ var path  = require('path');
 var jsdom = require('jsdom').jsdom;
 
 module.exports = jsdomrequire;
-function jsdomrequire(html, requireOptions, onInit) {
-    var window;
-
-    if (arguments.length === 2) {
-        onInit = requireOptions;
-        if (typeof html === 'string') {
-            requireOptions = {};
-        } else {
-            requireOptions = html;
-            html = null;
-        }
-    } else if (arguments.length === 1) {
-        onInit = html;
-        html = null;
-        requireOptions = {};
+/**
+ * Options
+ * Callback
+ */
+function jsdomrequire(options, onInit) {
+    if (arguments.length === 1) {
+        onInit = options;
+        options = {};
     }
 
-    window = getWindow(html);
+    var window = getWindow(options.html);
 
-    initRequire(window, requireOptions, function(err) {
+    var self = this;
+    initRequire(window, options.requireOptions, function(err) {
         onInit(err, window);
     });
 

@@ -15,12 +15,13 @@ describe('fakedom-amd', function() {
 
         var html = '<html><body><h1>test</h1></body></html>';
         var options = {
+            baseUrl: 'test',
             callback: function() { requireJsLoaded = true; }
         };
 
         context('when given HTML, require options and a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd(html, options, function(e, w) {
+                dom = new fakedomamd({ html: html, requireOptions: options }, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -46,7 +47,7 @@ describe('fakedom-amd', function() {
 
         context('when given html and a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd(html, function(e, w) {
+                dom = new fakedomamd({ html: html }, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -68,7 +69,7 @@ describe('fakedom-amd', function() {
 
         context('when given options and a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd({ baseUrl: 'test' }, function(e, w) {
+                dom = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -121,7 +122,7 @@ describe('fakedom-amd', function() {
 
         context('when it has been constructed', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd({ baseUrl: 'test' }, function(e, w) {
+                dom = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
                     window = w;
                     done();
                 });
@@ -211,7 +212,7 @@ describe('fakedom-amd', function() {
 
         context('with an AMD module loaded that reaches into the DOM', function() {
             beforeEach(function(done) {
-                var dom = new fakedomamd({ baseUrl: 'test' }, function(e, w) {
+                var dom = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
                     err = e;
                     window = w;
                     loadModule()
@@ -245,7 +246,7 @@ describe('fakedom-amd', function() {
 
         context('when it has been constructed', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd({ baseUrl: 'test' }, function(e, w) {
+                dom = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
                     window = w;
                     done();
                 });
