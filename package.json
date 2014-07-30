@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "test": "mocha",
-    "spec": "mocha -R spec"
+    "spec": "mocha -R spec",
+    "coverage": "istanbul cover _mocha"
   },
   "author": "James Barwell <jb@jamesbarwell.co.uk>",
   "license": "MIT",
@@ -22,6 +23,7 @@
     "requirejs": "~2.1.14"
   },
   "devDependencies": {
-    "mocha": "~1.20.1"
+    "mocha": "~1.20.1",
+    "istanbul": "~0.3.0"
   }
 }
