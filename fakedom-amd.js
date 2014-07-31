@@ -2,12 +2,18 @@ var fs    = require('fs');
 var path  = require('path');
 var jsdom = require('jsdom').jsdom;
 
+var sinon = global.sinon = require('sinon');
+require("sinon/lib/sinon/util/event");
+require("sinon/lib/sinon/util/fake_xml_http_request");
+
 module.exports = jsdomrequire;
 /**
  * Options
  * Callback
  */
 function jsdomrequire(options, onInit) {
+    var self = this;
+
     if (arguments.length === 1) {
         onInit = options;
         options = {};
@@ -15,7 +21,16 @@ function jsdomrequire(options, onInit) {
 
     var window = getWindow(options.html);
 
-    var self = this;
+    // Provide fake XHR
+    if (!options.disableXhr) {
+        this.requests = [];
+        xhr = sinon.useFakeXMLHttpRequest();
+        xhr.onCreate = function(req) {
+            self.requests.push(req);
+        }
+        window.XMLHttpRequest = xhr;
+    }
+
     initRequire(window, options.requireOptions, function(err) {
         if (options.module) {
            self.amdrequire(options.module, function(err, module) {

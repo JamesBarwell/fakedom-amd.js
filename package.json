@@ -8,7 +8,9 @@
     "amd",
     "dom",
     "require",
-    "jsdom"
+    "jsdom",
+    "xhr",
+    "ajax"
   ],
   "scripts": {
     "test": "mocha",
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "mocha": "~1.20.1",
-    "istanbul": "~0.3.0"
+    "istanbul": "~0.3.0",
+    "sinon": "~1.10.3"
   }
 }

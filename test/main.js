@@ -5,7 +5,7 @@ var fakedomamd = require('../fakedom-amd');
 
 describe('fakedom-amd', function() {
 
-    var dom;
+    var env;
 
     describe('Constructor', function() {
         var err;
@@ -23,7 +23,7 @@ describe('fakedom-amd', function() {
             var module;
 
             beforeEach(function(done) {
-                dom = new fakedomamd({
+                env = new fakedomamd({
                     html:           html,
                     requireOptions: options,
                     module:         'fixture/standalone'
@@ -59,7 +59,7 @@ describe('fakedom-amd', function() {
 
         context('when given HTML, require options and a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd({ html: html, requireOptions: options }, function(e, w) {
+                env = new fakedomamd({ html: html, requireOptions: options }, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -85,7 +85,7 @@ describe('fakedom-amd', function() {
 
         context('when given html and a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd({ html: html }, function(e, w) {
+                env = new fakedomamd({ html: html }, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -107,7 +107,7 @@ describe('fakedom-amd', function() {
 
         context('when given options and a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
+                env = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -129,7 +129,7 @@ describe('fakedom-amd', function() {
 
         context('when given a callback', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd(function(e, w) {
+                env = new fakedomamd(function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -160,7 +160,7 @@ describe('fakedom-amd', function() {
 
         context('when it has been constructed', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
+                env = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
                     window = w;
                     done();
                 });
@@ -168,7 +168,7 @@ describe('fakedom-amd', function() {
 
             context('and amdrequire() is given a module name and callback', function() {
                 beforeEach(function(done) {
-                    dom.amdrequire('fixture/standalone', function(e, m) {
+                    env.amdrequire('fixture/standalone', function(e, m) {
                         err = e;
                         module = m;
                         done();
@@ -186,7 +186,7 @@ describe('fakedom-amd', function() {
 
                 context('and amdrequire() is run again with the same module name', function() {
                     beforeEach(function(done) {
-                        dom.amdrequire('fixture/standalone', function(e, m) {
+                        env.amdrequire('fixture/standalone', function(e, m) {
                             err = e;
                             module = m;
                             done();
@@ -210,7 +210,7 @@ describe('fakedom-amd', function() {
                 beforeEach(function(done) {
                     modules = [];
 
-                    dom.amdrequire(['fixture/standalone', 'fixture/standalone2'], function(e, m, m2) {
+                    env.amdrequire(['fixture/standalone', 'fixture/standalone2'], function(e, m, m2) {
                         err = e;
                         modules.push(m);
                         modules.push(m2);
@@ -231,7 +231,7 @@ describe('fakedom-amd', function() {
 
             context('and amdrequire() loads a module that has a dependency', function() {
                 beforeEach(function(done) {
-                    dom.amdrequire('fixture/dependency-a', function(e, m) {
+                    env.amdrequire('fixture/dependency-a', function(e, m) {
                         err = e;
                         module = m;
                         done();
@@ -251,7 +251,7 @@ describe('fakedom-amd', function() {
 
             context('and amdrequire() loads a module that it cannot find', function() {
                 beforeEach(function(done) {
-                    dom.amdrequire('fixture/does-not-exist', function(e, m) {
+                    env.amdrequire('fixture/does-not-exist', function(e, m) {
                         err = e;
                         module = m;
                         done();
@@ -275,14 +275,14 @@ describe('fakedom-amd', function() {
 
         context('with an AMD module loaded that reaches into the DOM', function() {
             beforeEach(function(done) {
-                var dom = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
+                var env = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
                     err = e;
                     window = w;
                     loadModule()
                 });
 
                 function loadModule() {
-                    dom.amdrequire('fixture/dom-manipulator', function(e, m) {
+                    env.amdrequire('fixture/dom-manipulator', function(e, m) {
                         err = e;
                         module = m;
                         done();
@@ -309,7 +309,7 @@ describe('fakedom-amd', function() {
 
         context('when it has been constructed', function() {
             beforeEach(function(done) {
-                dom = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
+                env = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
                     window = w;
                     done();
                 });
@@ -322,12 +322,12 @@ describe('fakedom-amd', function() {
                             return 'stub'
                         }
                     }
-                    dom.stub('fixture/dependency-b', stub);
+                    env.stub('fixture/dependency-b', stub);
                 });
 
                 context('and amdrequire() loads a module that has the stub dependency', function() {
                     beforeEach(function(done) {
-                        dom.amdrequire('fixture/dependency-a', function(e, m) {
+                        env.amdrequire('fixture/dependency-a', function(e, m) {
                             err = e;
                             module = m;
                             done();
@@ -348,12 +348,12 @@ describe('fakedom-amd', function() {
                             return 'stub'
                         }
                     }
-                    dom.stub({ 'fixture/dependency-b': stub });
+                    env.stub({ 'fixture/dependency-b': stub });
                 });
 
                 context('and amdrequire() loads a module that has the stub dependency', function() {
                     beforeEach(function(done) {
-                        dom.amdrequire('fixture/dependency-a', function(e, m) {
+                        env.amdrequire('fixture/dependency-a', function(e, m) {
                             err = e;
                             module = m;
                             done();
@@ -369,5 +369,73 @@ describe('fakedom-amd', function() {
         });
     });
 
+    describe('Fake XHR', function() {
+        var err;
+        var window;
+
+        var html = '<html><body><h1>test</h1></body></html>';
+        var options = {
+            baseUrl: 'test',
+        };
+
+        context('when given HTML, require options, a module name and a callback', function() {
+            var module;
+
+            beforeEach(function(done) {
+                env = new fakedomamd({
+                    html:           html,
+                    requireOptions: options,
+                    module:         'fixture/xhr-client'
+                }, function(e, w, m) {
+                    err = e;
+                    window = w;
+                    module = m;
+                    done();
+                });
+            });
+
+            context('and an XHR request is made', function() {
+                var requests;
+
+                var responseStatus;
+                var responseBody;
+
+                beforeEach(function() {
+                    var data = JSON.stringify({ foo: 'bar' });
+                    module.post('/test', 'application/json', data, function(status, body) {
+                        responseStatus = status;
+                        responseBody   = body;
+                    });
+
+                    requests = env.requests;
+                });
+
+                it('should have counted one request', function() {
+                    assert.equal(requests.length, 1);
+                });
+
+                it('should make the request data available', function() {
+                    var request = requests[0];
+                    assert.equal(request.url, '/test');
+                    assert.equal(request.requestBody, '{"foo":"bar"}');
+
+                    var contentType = request.requestHeaders['Content-Type'];
+                    assert.ok(contentType.indexOf('application/json' !== -1));
+                });
+
+                context('and the server responds to the request', function() {
+                    beforeEach(function() {
+                        var request = requests[0];
+                        request.respond(200, {}, 'success');
+                    });
+
+                    it('should fulfil the request', function() {
+                        assert.equal(responseStatus, 200);
+                        assert.equal(responseBody, 'success');
+                    });
+                });
+            });
+        });
+    });
 
 });
