@@ -1,6 +1,6 @@
 {
   "name": "fakedom-amd",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Provides a simple interface to bring up a fake DOM with AMD support.",
   "main": "fakedom-amd.js",
   "keywords": [
@@ -22,11 +22,11 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "jsdom": "~0.11.0",
-    "requirejs": "~2.1.14"
+    "requirejs": "~2.1.14",
+    "sinon": "~1.10.3"
   },
   "devDependencies": {
     "mocha": "~1.20.1",
-    "istanbul": "~0.3.0",
-    "sinon": "~1.10.3"
+    "istanbul": "~0.3.0"
   }
 }
