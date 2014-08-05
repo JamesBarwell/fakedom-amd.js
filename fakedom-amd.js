@@ -82,7 +82,7 @@ function jsdomrequire(options, onInit) {
 
 function getWindow(html) {
     html = html || '';
-    if (html.indexOf('<body>') === -1) {
+    if (html.indexOf('<body') === -1) {
         html = '<html><head></head><body>' + html + '</body></html>';
     }
 
