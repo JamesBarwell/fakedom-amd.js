@@ -17,6 +17,10 @@
     "spec": "mocha -R spec",
     "coverage": "istanbul cover _mocha"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JamesBarwell/fakedom-amd.js.git"
+  },
   "author": "James Barwell <jb@jamesbarwell.co.uk>",
   "license": "MIT",
   "readmeFilename": "README.md",
