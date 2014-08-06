@@ -7,57 +7,51 @@ require("sinon/lib/sinon/util/event");
 require("sinon/lib/sinon/util/fake_xml_http_request");
 
 
-module.exports = jsdomrequire;
+module.exports = fakedom;
 /**
  * Options
  * Callback
  */
-function jsdomrequire(options, onInit) {
-    var self = this;
-
+function fakedom(options, onInit) {
     if (arguments.length === 1) {
         onInit = options;
         options = {};
     }
 
     var window = getWindow(options.html);
-
-    // Provide fake XHR
-    if (!options.disableXhr) {
-        this.requests = [];
-        xhr = sinon.useFakeXMLHttpRequest();
-        xhr.onCreate = function(req) {
-            self.requests.push(req);
-        }
-        window.XMLHttpRequest = xhr;
-    }
+    augmentWindow.call(this, window);
 
     initRequire(window, options.requireOptions, function(err) {
-        if (options.module) {
-           self.amdrequire(options.module, function(err, module) {
-                if (err) {
-                    return onInit(err);
-                }
-                return onInit(null, window, module);
-           });
-        } else {
-            onInit(err, window);
+        if (!options.module) {
+            return onInit(err, window);
         }
-    });
+
+        this.amdrequire(options.module, function(err, module) {
+            if (err) {
+                return onInit(err);
+            }
+            return onInit(null, window, module);
+        });
+    }.bind(this));
+
 
     this.amdrequire = function(deps, onAmdLoad) {
-        deps = Array.isArray(deps) ? deps : [ deps ];
-
         if (!window) {
             return onAmdLoad(new Error(
                 'Could not require module because load() has not been run'
             ));
         }
 
-        makeSetTimeoutSafe();
+        if (!window.require || typeof window.require !== 'function') {
+            return onAmdLoad(new Error('requirejs failed to initialise'));
+        }
+
+        deps = Array.isArray(deps) ? deps : [ deps ];
+
+        makeSetTimeoutSafe(window);
 
         window.require(deps, function() {
-            restoreSetTimeout();
+            restoreSetTimeout(window);
 
             var args = Array.prototype.slice.call(arguments);
             args.unshift(null);
@@ -77,8 +71,7 @@ function jsdomrequire(options, onInit) {
         }
 
         Object.keys(name).forEach(function(moduleName) {
-            var stub = name[moduleName];
-            window.define(moduleName, stub);
+            window.define(moduleName, name[moduleName]);
         });
 
         return this;
@@ -95,19 +88,33 @@ function getWindow(html) {
     var options = {};
 
     var doc = jsdom(html, level, options);
-    window = doc.parentWindow;
+    return doc.parentWindow;
+}
 
+function augmentWindow(window, disableXhr) {
     // Allow AMD modules to use console to log to STDOUT/ERR
     window.console = console;
 
-    return window;
+    // Provide fake XHR
+    if (!disableXhr) {
+        this.requests = [];
+        xhr = sinon.useFakeXMLHttpRequest();
+        xhr.onCreate = function(req) {
+            this.requests.push(req);
+        }.bind(this);
+        window.XMLHttpRequest = xhr;
+    }
 }
 
 function initRequire(window, options, onRequireLoad) {
     // Set require.js options
     window.require = options;
 
-    var requirePath = path.resolve(__dirname, './node_modules/requirejs/require.js');
+    var requirePath = path.resolve(
+        __dirname,
+        './node_modules/requirejs/require.js'
+    );
+
     fs.exists(requirePath, function(exists) {
         if (!exists) {
             var err = new Error(
@@ -116,12 +123,12 @@ function initRequire(window, options, onRequireLoad) {
             return onRequireLoad(err);
         }
 
-        makeSetTimeoutSafe();
+        makeSetTimeoutSafe(window);
 
         var scriptEl = window.document.createElement('script');
         scriptEl.src = requirePath;
         scriptEl.onload = function() {
-            restoreSetTimeout();
+            restoreSetTimeout(window);
             onRequireLoad();
         }
         window.document.body.appendChild(scriptEl);
@@ -131,13 +138,14 @@ function initRequire(window, options, onRequireLoad) {
 // Nasty stuff to ensure that requirejs can still load modules even when
 // setTimeout has been stubbed
 var oldTimeout;
-function makeSetTimeoutSafe() {
+
+function makeSetTimeoutSafe(window) {
     oldTimeout = window.setTimeout;
     window.setTimeout = function(fn) {
         fn();
     }
 }
 
-function restoreSetTimeout() {
+function restoreSetTimeout(window) {
     window.setTimeout = oldTimeout;
 }
