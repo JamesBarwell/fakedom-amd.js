@@ -51,6 +51,7 @@ Instantiates a new DOM sandbox with the given options.
 * options: Optional configuration object with the following optional keys:
   * html: An HTML string to create the fake DOM. Will be wrapped with in html, head and body tags if not already.
   * requireOptions: [requirejs configuration options](http://requirejs.org/docs/api.html#config).
+  * jsdomOptions: Configuration options for [jsdom](https://github.com/tmpvar/jsdom).
   * stubs: An object mapping module names to modules; useful for defining stubs.
   * module: The name of a module to be required initially, and given back in the callback.
 * onLoad: A function to run on initialisationation, given the arguments: error, window and module (module is only given if a module was specified in the options).

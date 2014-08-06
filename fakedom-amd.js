@@ -18,7 +18,7 @@ function fakedom(options, onInit) {
         options = {};
     }
 
-    var window = getWindow(options.html);
+    var window = getWindow(options.html, options.jsdomOptions);
     augmentWindow.call(this, window);
 
     initRequire(window, options.requireOptions, function(err) {
@@ -78,14 +78,14 @@ function fakedom(options, onInit) {
     }
 }
 
-function getWindow(html) {
+function getWindow(html, jsdomOptions) {
     html = html || '';
     if (html.indexOf('<body') === -1) {
         html = '<html><head></head><body>' + html + '</body></html>';
     }
 
     var level   = null; // defaults to 3
-    var options = {};
+    var options = jsdomOptions || {};
 
     var doc = jsdom(html, level, options);
     return doc.parentWindow;
