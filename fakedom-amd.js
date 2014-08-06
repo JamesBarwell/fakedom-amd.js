@@ -6,6 +6,7 @@ var sinon = global.sinon = require('sinon');
 require("sinon/lib/sinon/util/event");
 require("sinon/lib/sinon/util/fake_xml_http_request");
 
+
 module.exports = jsdomrequire;
 /**
  * Options
@@ -53,7 +54,11 @@ function jsdomrequire(options, onInit) {
             ));
         }
 
+        makeSetTimeoutSafe();
+
         window.require(deps, function() {
+            restoreSetTimeout();
+
             var args = Array.prototype.slice.call(arguments);
             args.unshift(null);
             onAmdLoad.apply(null, args);
@@ -111,11 +116,28 @@ function initRequire(window, options, onRequireLoad) {
             return onRequireLoad(err);
         }
 
+        makeSetTimeoutSafe();
+
         var scriptEl = window.document.createElement('script');
         scriptEl.src = requirePath;
         scriptEl.onload = function() {
+            restoreSetTimeout();
             onRequireLoad();
         }
         window.document.body.appendChild(scriptEl);
     });
+}
+
+// Nasty stuff to ensure that requirejs can still load modules even when
+// setTimeout has been stubbed
+var oldTimeout;
+function makeSetTimeoutSafe() {
+    oldTimeout = window.setTimeout;
+    window.setTimeout = function(fn) {
+        fn();
+    }
+}
+
+function restoreSetTimeout() {
+    window.setTimeout = oldTimeout;
 }

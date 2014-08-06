@@ -1,9 +1,15 @@
 var assert = require('assert');
 var mocha  = require('mocha');
+var sinon  = require('sinon');
 
 var fakedomamd = require('../fakedom-amd');
 
 describe('fakedom-amd', function() {
+
+    // Fake timers defined here to prove that scenarios all work with them enabled
+    var clock;
+    beforeEach(function() { clock = sinon.useFakeTimers(); });
+    afterEach(function() { clock.restore(); });
 
     var env;
 
@@ -433,6 +439,39 @@ describe('fakedom-amd', function() {
                         assert.equal(responseStatus, 200);
                         assert.equal(responseBody, 'success');
                     });
+                });
+            });
+        });
+    });
+
+    describe('Fake timer compatibility', function() {
+        context('when a timer is set to run in 1000ms', function() {
+            var timerHasRun;
+
+            beforeEach(function() {
+                timerHasRun = false;
+                setTimeout(function() {
+                    timerHasRun = true;
+                }, 1000);
+            });
+
+            context('and 1000ms has elapsed', function() {
+                beforeEach(function() {
+                    clock.tick(1000);
+                });
+
+                it('should have run the timeout function', function() {
+                    assert.ok(timerHasRun);
+                });
+            });
+
+            context('and 999ms has elapsed', function() {
+                beforeEach(function() {
+                    clock.tick(999);
+                });
+
+                it('should not have run the timeout function', function() {
+                    assert.ok(!timerHasRun);
                 });
             });
         });
