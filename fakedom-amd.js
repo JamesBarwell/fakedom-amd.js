@@ -19,7 +19,12 @@ function fakedom(options, onInit) {
     }
 
     var window = getWindow(options.html, options.jsdomOptions);
-    augmentWindow.call(this, window);
+    augmentWindow.call(
+        this,
+        window,
+        options.disableConsole,
+        options.disableXhr
+    );
 
     initRequire(window, options.requireOptions, function(err) {
         if (!options.module) {
@@ -91,9 +96,11 @@ function getWindow(html, jsdomOptions) {
     return doc.parentWindow;
 }
 
-function augmentWindow(window, disableXhr) {
+function augmentWindow(window, disableConsole, disableXhr) {
     // Allow AMD modules to use console to log to STDOUT/ERR
-    window.console = console;
+    if (!disableConsole) {
+        window.console = console;
+    }
 
     // Provide fake XHR
     if (!disableXhr) {
