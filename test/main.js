@@ -11,6 +11,8 @@ describe('fakedom-amd', function() {
     beforeEach(function() { clock = sinon.useFakeTimers(); });
     afterEach(function() { clock.restore(); });
 
+    var testBase = process.cwd() + '/test';
+
     var env;
 
     describe('Constructor', function() {
@@ -21,7 +23,7 @@ describe('fakedom-amd', function() {
 
         var html = '<html><body><h1>test</h1></body></html>';
         var options = {
-            baseUrl: 'test',
+            baseUrl: testBase,
             callback: function() { requireJsLoaded = true; }
         };
 
@@ -42,7 +44,7 @@ describe('fakedom-amd', function() {
             });
 
             it('should load the given HTML', function() {
-                assert.ok(window.document.innerHTML.indexOf('<h1>test</h1>') !== -1);
+                assert.ok(window.document.body.innerHTML.indexOf('<h1>test</h1>') !== -1);
             });
 
             it('should initialise require.js', function() {
@@ -73,7 +75,7 @@ describe('fakedom-amd', function() {
             });
 
             it('should load the given HTML', function() {
-                assert.ok(window.document.innerHTML.indexOf('<h1>test</h1>') !== -1);
+                assert.ok(window.document.body.innerHTML.indexOf('<h1>test</h1>') !== -1);
             });
 
             it('should initialise require.js', function() {
@@ -99,7 +101,7 @@ describe('fakedom-amd', function() {
             });
 
             it('should load the given HTML', function() {
-                assert.ok(window.document.innerHTML.indexOf('<h1>test</h1>') !== -1);
+                assert.ok(window.document.body.innerHTML.indexOf('<h1>test</h1>') !== -1);
             });
 
             it('should initialise require.js', function() {
@@ -113,7 +115,7 @@ describe('fakedom-amd', function() {
 
         context('when given options and a callback', function() {
             beforeEach(function(done) {
-                env = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
+                env = new fakedomamd({ requireOptions: { baseUrl: testBase }}, function(e, w) {
                     err = e;
                     window = w;
                     done();
@@ -121,7 +123,7 @@ describe('fakedom-amd', function() {
             });
 
             it('should load default HTML', function() {
-                assert.ok(window.document.innerHTML.indexOf('<h1>test</h1>') === -1);
+                assert.ok(window.document.body.innerHTML.indexOf('<h1>test</h1>') === -1);
             });
 
             it('should initialise require.js', function() {
@@ -143,7 +145,7 @@ describe('fakedom-amd', function() {
             });
 
             it('should load default HTML', function() {
-                assert.ok(window.document.innerHTML.indexOf('<h1>test</h1>') === -1);
+                assert.ok(window.document.body.innerHTML.indexOf('<h1>test</h1>') === -1);
             });
 
             it('should initialise require.js', function() {
@@ -166,7 +168,7 @@ describe('fakedom-amd', function() {
 
         context('when it has been constructed', function() {
             beforeEach(function(done) {
-                env = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
+                env = new fakedomamd({ requireOptions: { baseUrl: testBase }}, function(e, w) {
                     window = w;
                     done();
                 });
@@ -281,7 +283,7 @@ describe('fakedom-amd', function() {
 
         context('with an AMD module loaded that reaches into the DOM', function() {
             beforeEach(function(done) {
-                var env = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
+                var env = new fakedomamd({ requireOptions: { baseUrl: testBase }}, function(e, w) {
                     err = e;
                     window = w;
                     loadModule()
@@ -315,7 +317,7 @@ describe('fakedom-amd', function() {
 
         context('when it has been constructed', function() {
             beforeEach(function(done) {
-                env = new fakedomamd({ requireOptions: { baseUrl: 'test' }}, function(e, w) {
+                env = new fakedomamd({ requireOptions: { baseUrl: testBase }}, function(e, w) {
                     window = w;
                     done();
                 });
@@ -381,7 +383,7 @@ describe('fakedom-amd', function() {
 
         var html = '<html><body><h1>test</h1></body></html>';
         var options = {
-            baseUrl: 'test',
+            baseUrl: testBase
         };
 
         context('when given HTML, require options, a module name and a callback', function() {

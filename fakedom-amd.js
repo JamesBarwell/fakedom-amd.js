@@ -92,7 +92,7 @@ function getWindow(html, jsdomOptions) {
     var level   = null; // defaults to 3
     var options = jsdomOptions || {};
 
-    var doc = jsdom(html, level, options);
+    var doc = jsdom(html, options);
     return doc.parentWindow;
 }
 
